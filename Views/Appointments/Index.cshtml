@@ -1,0 +1,96 @@
+@using Prueba.Services
+@model IEnumerable<Prueba.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Gestión de Citas";
+}
+
+<h1>Citas</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Crear Nueva Cita</a>
+</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success d-flex justify-content-between" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger d-flex justify-content-between" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-controller="Appointments" asp-action="Index" method="get" class="mb-4">
+    <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label for="pacientId" class="form-label">Filtrar por Paciente:</label>
+            <select name="pacientId" id="pacientId" class="form-select">
+                <option value="">Todos los Pacientes</option>
+                @foreach (var pacient in (SelectList)ViewBag.PacientId)
+                {
+                    <option value="@pacient.Value" selected="@(pacient.Value == Context.Request.Query["pacientId"])">@pacient.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="doctorId" class="form-label">Filtrar por Médico:</label>
+            <select name="doctorId" id="doctorId" class="form-select">
+                <option value="">Todos los Médicos</option>
+                @foreach (var doctor in (SelectList)ViewBag.DoctorId)
+                {
+                    <option value="@doctor.Value" selected="@(doctor.Value == Context.Request.Query["doctorId"])">@doctor.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="state" class="form-label">Filtrar por Estado:</label>
+            <select name="state" id="state" class="form-select">
+                <option value="">Todos los Estados</option>
+                @foreach (var state in AppointmentService.AppointmentStates.AllStates)
+                {
+                    <option value="@state" selected="@(state == Context.Request.Query["state"])">@state</option>
+                }
+            </select>
+        </div>
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-info">Aplicar Filtros</button>
+            <a asp-action="Index" class="btn btn-secondary">Limpiar Filtros</a>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Paciente</th>
+        <th>Médico</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Estado</th>
+        <th>Observaciones</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Pacient!.Name)</td> 
+            <td>@Html.DisplayFor(modelItem => item.Doctor!.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppointmentDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.AppointmentHour)</td>
+            <td>@Html.DisplayFor(modelItem => item.State)</td>
+            <td>@Html.DisplayFor(modelItem => item.Observations)</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detalles</a> 
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

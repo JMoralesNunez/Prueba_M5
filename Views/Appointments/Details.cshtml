@@ -1,0 +1,86 @@
+@using Prueba.Services;
+@model Prueba.Models.Appointment
+
+
+@{
+    ViewData["Title"] = "Detalles de la Cita";
+}
+
+<h1>Detalles de la Cita</h1>
+
+<div>
+    <h4>Cita #@Model.Id</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Pacient)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Pacient!.Name)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Doctor)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Doctor!.Name) (@Html.DisplayFor(model => model.Doctor!.Speciality))
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.AppointmentHour)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.AppointmentHour)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Observations)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Observations)
+        </dd>
+    </dl>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success d-flex justify-content-between" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger d-flex justify-content-between" role="alert">
+        @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div>
+    @if (Model.State == AppointmentService.AppointmentStates.Programmed)
+    {
+        <form asp-action="Cancel" asp-route-id="@Model.Id" method="post" class="d-inline">
+            <button type="submit" class="btn btn-warning me-2" onclick="return confirm('¿Estás seguro de que deseas cancelar esta cita?');">Cancelar Cita</button>
+        </form>
+
+        <form asp-action="Complete" asp-route-id="@Model.Id" method="post" class="d-inline">
+            <button type="submit" class="btn btn-success me-2" onclick="return confirm('¿Estás seguro de que deseas marcar esta cita como completada?');">Marcar como Completada</button>
+        </form>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Volver a la Lista</a>
+</div>

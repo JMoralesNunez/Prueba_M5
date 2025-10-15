@@ -1,0 +1,59 @@
+@model Prueba.Models.Appointment
+
+@{
+    ViewData["Title"] = "Crear Nueva Cita";
+}
+
+<h1>Crear Nueva Cita</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="PacientID" class="form-label">Paciente</label>
+                <select asp-for="PacientID" class="form-select" asp-items="ViewBag.PacientId">
+                    <option value="">-- Seleccionar Paciente --</option>
+                </select>
+                <span asp-validation-for="PacientID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DoctorID" class="form-label">Médico</label>
+                <select asp-for="DoctorID" class="form-select" asp-items="ViewBag.DoctorId">
+                    <option value="">-- Seleccionar Médico --</option>
+                </select>
+                <span asp-validation-for="DoctorID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AppointmentDate" class="form-label">Fecha de la Cita</label>
+                <input asp-for="AppointmentDate" type="date" class="form-control" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="AppointmentHour" class="form-label">Hora de la Cita</label>
+                <input asp-for="AppointmentHour" type="time" class="form-control" />
+                <span asp-validation-for="AppointmentHour" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Observations" class="form-label">Observaciones</label>
+                <textarea asp-for="Observations" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Observations" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Crear Cita" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
