@@ -34,6 +34,46 @@ Check your .NET version:
 dotnet --version
 ```
 
+### Environment Configuration
+Before running the project, you must configure your email credentials so the system can send appointment confirmation emails.
+
+#### 1. Locate the configuration file
+In the root directory of the project, open (or create if missing):
+
+```bash
+appsettings.Development.json
+```
+
+#### 2. Add your email settings under EMAIL_CONFIGURATIONS
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "EMAIL_CONFIGURATIONS": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "From": "your_personal_email@gmail.com",
+    "Password": "your_google_app_password"
+  }
+}
+
+```
+
+### ⚠️ Important:
+Do not use your regular Gmail password.
+You must create an App Password in your Google Account settings:
+
+- Go to Google Account → Security → 2-Step Verification → App Passwords
+
+- You can also create the password following this [link](https://myaccount.google.com/apppasswords?rapt=AEjHL4MV6Hlv6p72D5d085ZiNUBxSyz2yDALsncVRhENryR1Od74xSx9iaKDzoRwNqihIikjxfTCVuC7Hgf5_Wzo19IOQbCuFq6dGp5x3pvYOYBq-dsSTfI)
+
+- Generate a new password for "Mail" and copy it here, **With no spaces**.
+
 ### 3️⃣ Build and run the project
 
 ```bash
